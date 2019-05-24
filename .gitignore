@@ -1,4 +1,10 @@
 
 # Dependency
 /Front-end/node_modules
+<<<<<<< HEAD
 /Back-end/node_modules
+=======
+/Back-end/Search/node_modules
+/Back-end/Search/config
+/Back-end/Search/data
+>>>>>>> 42a04bd8f97cc01189dd62c8cefc855d70b8f1d2
