@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import {Form, ListGroup, Container, Row, Col, Collapse, Modal, Button, InputGroup, Tab, Fade } from 'react-bootstrap';
+import { Form, ListGroup, Container, Row, Col, Collapse, Modal, Button, InputGroup, Tab, Fade } from 'react-bootstrap';
 
 class Comment extends Component {
   constructor(props) {
@@ -12,47 +12,44 @@ class Comment extends Component {
       btnBG: 'rgba(255,255,255,0.1)',
       btnFG: 'rgba(55,55,55,0.8)'
     }
-    this.handleSubmit= this.handleSubmit.bind(this);
-    this.handleChange= this.handleChange.bind(this);
+    this.handleSubmit = this.handleSubmit.bind(this);
+    this.handleChange = this.handleChange.bind(this);
   }
-  controlButtonColor(type) {
-    switch(type) {
-      case 'enter':
-      this.setState({
-        btnBG: 'rgba(55,55,55,0.2)',
-        btnFG: 'rgba(255,255,255,0.5)'})
-      
-        break;
-      case 'leave':
-      this.setState({
-        btnBG: 'rgba(255,255,255,0.6)',
-        btnFG: 'rgba(55,55,55,0.8)' })
-        break;
-      default:
-        break;
-    }
+
+  handleButtonLeave() {
+    this.setState({
+      btnBG: 'rgba(255,255,255,0.6)',
+      btnFG: 'rgba(55,55,55,0.8)'
+    });
+  }
+
+  handleButtonEnter() {
+    this.setState({
+      btnBG: 'rgba(55,55,55,0.2)',
+      btnFG: 'rgba(255,255,255,0.5)'
+    })
   }
 
   userControl() {
     this.setState({ showUsers: !this.state.showUsers })
   }
+
   handleSubmit(event) {
-    if(!this.state.inputComment)
+    event.preventDefault();
+    if (!this.state.inputComment)
       return;
     let newComment = {
       date: Date(),
       userName: 'Jun',
       input: this.state.inputComment
-    } 
+    }
     this.setState((prevState) => ({
       comments: prevState.comments.concat(newComment),
       inputComment: ''
     }));
-
-    console.log(this.state.comments)
   }
 
-  handleChange(event){
+  handleChange(event) {
     event.preventDefault();
     this.setState({
       [event.target.id]: event.target.value
@@ -60,7 +57,7 @@ class Comment extends Component {
   }
   render() {
     const { showUsers } = this.state;
-    
+
     return (
       <Modal
         size="lg"
@@ -73,10 +70,11 @@ class Comment extends Component {
         </Modal.Header>
         <Modal.Body
           style={{ height: '40vh' }}>
+          {/* 
           <Button
             onClick={() => this.userControl()}
-            onMouseEnter={() => this.controlButtonColor('enter')}
-            onMouseLeave={() => this.controlButtonColor('leave')}
+            onMouseEnter={() => this.handleButtonEnter()}
+            onMouseLeave={() => this.handleButtonLeave()}
             aria-controls="user-list-container"
             aria-expanded={showUsers}
             style={{
@@ -88,31 +86,51 @@ class Comment extends Component {
           >
             {showUsers ? 'hide' : 'show'}
           </Button>
-          <Tab.Container id="list-group-tabs-example" defaultActiveKey="#link1" >
-            <Tab.Content style={{height:'100%', width:'100%'}}>
-              <Tab.Pane 
-                eventKey="#link1" 
-                style={{
-                  padding: '6px 12px 6px 12px',  wordWrap: 'break-word',
-                  boxSizing: 'border-box', width:'100%', height:'100%',
-                  resize:"none", borderRadius:'5px', border:'0.5px solid rgba(0,0,0,0.1)' }}>
-                  <ul>
-                  {this.state.comments.map(item => 
-                    <li style={{textAlign:'right'}}>
-                      <span >{item.Date}, {item.userName} {item.input}</span>
-                    </li>
-                  )}
-                  </ul>
-              </Tab.Pane>
-              <Tab.Pane 
-                eventKey="#link2" 
-                style={{
-                    readOnly: true,
-                    padding: '6px 12px 6px 12px',
-                    boxSizing: 'border-box', width:'100%', height:'100%',
-                    resize:"none", borderRadius:'5px', border:'0.5px solid rgba(0,0,0,0.1)' }}>
-              </Tab.Pane>
-            </Tab.Content>
+          */}
+          <Container fluid style={{ height: "100%", width: "100%", borderRadius: '5px', border: '0.5px solid rgba(0,0,0,0.3)' }}>
+            <Tab.Container id="list-group-tabs-example" defaultActiveKey="#link1" style={{ borderRadius: '5px 0px 0px 5px', border: '0.5px solid rgba(0,0,0,0.5)' }}>
+              <Row >
+                <Col sm={9} xs={9} md={9} xl={9} style={{ padding: '0px' }}>
+                  <Tab.Content style={{ height: '100%', width: '100%' }}>
+                    <Tab.Pane
+                      eventKey="#link1"
+                      style={{
+                        readOnly: true,
+                        padding: '6px 12px 6px 12px', wordWrap: 'break-word',
+                        boxSizing: 'border-box', width: '100%', height: '100%',
+                        resize: "none"
+                      }}>
+                      <ul>
+                        {this.state.comments.map((item , i) =>
+                          <li style={{ textAlign: 'right' }} key={i}>
+                            <span >{item.Date}, {item.userName} {item.input}</span>
+                          </li>
+                        )}
+                      </ul>
+                    </Tab.Pane>
+                    <Tab.Pane
+                      eventKey="#link2"
+                      style={{
+                        readOnly: true,
+                        padding: '6px 12px 6px 12px', wordWrap: 'break-word',
+                        boxSizing: 'border-box', width: '100%', height: '100%',
+                        resize: "none"
+                      }}>
+                    </Tab.Pane>
+                  </Tab.Content>
+                </Col>
+                <Col xs={3} sm={3} md={3} xl={3} style={{ padding: '0px' }}>
+                  <ListGroup style={{ border: '0px' }}>
+                    <ListGroup.Item action href="#link1" style={{ width: '100%', padding: '5px', margin: '0px', textAlign: 'center' }} disabled={!showUsers}>
+                      user1
+                    </ListGroup.Item>
+                    <ListGroup.Item action href="#link2" style={{ width: '100%', padding: '5px', margin: '0px', textAlign: 'center' }} disabled={!showUsers}>
+                      user2
+                    </ListGroup.Item>
+                  </ListGroup>
+                </Col>
+              </Row>
+              {/* 
             <Fade dimension='width' in={this.state.showUsers} style={{ width: "5rem", position: "absolute", top: '65px', right: '21px' }}>
               <ListGroup >
                 <ListGroup.Item action href="#link1" style={{ padding: '5px', margin: '0px', textAlign: 'center' }} disabled={!showUsers}>
@@ -122,41 +140,46 @@ class Comment extends Component {
                   user2
                   </ListGroup.Item>
               </ListGroup>
-            </Fade>
-          </Tab.Container>
+            </Fade>*/}
+            </Tab.Container>
+          </Container>
         </Modal.Body>
         <Modal.Footer>
-          <Container fluid style={{ padding: "0px" }}>
-          {this.state.inputComment}
-          <Form onSubmit={this.handleSubmit}>
-            <Form.Group controlId="inputComment" style={{padding:'0px', margin:'0px'}}>
-              <Form.Control 
-                type="text"
-                as="textarea"
-                onChange={this.handleChange}
-                value={this.state.inputComment}   
-                style={{ 
-                  overflow: 'auto', resize: "none", 
-                  borderRadius: '5px', border: '0.5px solid rgba(0,0,0,0.1)', wrap:'hard' }}
-                rows="4"/>
-              <Button
-                variant="primary"
-                type="submit"
-                style={{
-                  width: '5rem', height: '2.5rem', right: '21px',
-                  bottom: '21px', position: 'absolute'
-                }} >
-                Send
-              </Button>
-              </Form.Group>
+          <Container fluid style={{ height: "100%", width: "100%", borderRadius: '5px', border: '0.5px solid rgba(0,0,0,0.3)' }}>
+            {this.state.inputComment}
+            <Form onSubmit={this.handleSubmit}>
+              <Row >
+                <Col sm={9} xs={9} md={9} xl={9} style={{ padding: '0px' }}>
+                  <Form.Group controlId="inputComment" style={{ padding: '0px', margin: '0px' }}>
+                    <Form.Control
+                      type="text"
+                      as="textarea"
+                      onChange={this.handleChange}
+                      value={this.state.inputComment}
+                      style={{
+                        overflow: 'auto', resize: "none",
+                        borderRadius: '5px', border: '0.5px solid rgba(0,0,0,0.1)', wrap: 'hard'
+                      }}
+                      rows="2" />
+                  </Form.Group>
+                </Col>
+                <Col xs={3} sm={3} md={3} xl={3} style={{ padding: '0px' }}>
+                  <Button
+                    variant="primary"
+                    type="submit"
+                    style={{
+                      width: '100%', height: '100%'
+                    }} >
+                    Send
+                </Button>
+                </Col>
+              </Row>
             </Form>
-          </Container>    
+          </Container>
         </Modal.Footer>
       </Modal>
     )
   }
-
-
 }
 
 export default Comment;
